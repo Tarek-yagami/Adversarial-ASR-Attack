@@ -17,7 +17,9 @@ audio or images plus a `results.json`, and a README with the full results table 
 ## 📊 Highlights
 - **Wav2Vec2**: PGD on the CTC loss, with the perturbation re-projected onto the epsilon ball after
   psychoacoustic masking and energy filtering are applied — an earlier version of this attack let
-  post-processing silently blow past the stated epsilon by 5-6x. See [`audio/`](audio/).
+  post-processing silently blow past the stated epsilon by 5-6x. A follow-up sweep tests the more
+  interesting assumption directly: does tuning the loss weighting actually buy more success at the
+  same imperceptibility? The measured answer is more honest than "yes" — see [`audio/`](audio/).
 - **ResNet-18**: an 8/255 (barely visible) perturbation flips top-1 predictions to 100% confidence in
   the wrong class — `espresso` becomes `Irish setter`. See [`image/`](image/).
 - **YOLOv8n**: a disappearance attack reliably removes the true detection in every run, and also

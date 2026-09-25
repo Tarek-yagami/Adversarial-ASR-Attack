@@ -9,6 +9,21 @@ By adding small, imperceptible perturbations to an audio signal, we can manipula
 - **Psychoacoustic Masking** to hide perturbations
 - **Energy-Based Filtering** to make the attack more discreet
 
+## 🔄 Pipeline
+```mermaid
+flowchart LR
+    A[Clean audio] --> B["PGD step<br/>(CTC loss + entropy loss)"]
+    B --> C[Psychoacoustic masking]
+    C --> D[Energy-based filtering]
+    D --> E["Re-project onto<br/>epsilon L∞ ball"]
+    E -->|next iteration| B
+    E --> F[Adversarial audio]
+    F --> G[Wav2Vec2]
+    G --> H[Adversarial transcription]
+```
+Masking and filtering happen *inside* the loop, then get re-projected back onto the epsilon ball -
+see Results below for what that re-projection turns out to be doing most of the work.
+
 ## 🚀 Usage
 From the repository root, with dependencies installed (see the [top-level README](../README.md)):
 ```bash
@@ -38,6 +53,39 @@ to be.
 
 Raw and adversarial `.wav` files for every sample/config pair are committed under `samples/` — open them
 directly on GitHub to listen, or see `samples/results.json` for the full metrics.
+
+### The actual trick: tuning the loss, not just running PGD
+The attack's loss is `alignment_loss + entropy_weight * entropy_loss` — CTC alignment loss plus a
+weighted entropy term. It's tempting to assume `entropy_weight` is a simple dial: turn it up, get a
+more successful attack at the same perceptibility cost, since `epsilon` alone should bound how audible
+the perturbation can be. The notebook tests that directly instead of asserting it — fixing
+`epsilon=0.025` and sweeping `entropy_weight` across seven values, on both samples:
+
+![entropy weight sweep](samples/entropy_weight_sweep.png)
+
+**Imperceptibility (right) is flat**, exactly as the epsilon re-projection should make it — SNR barely
+moves regardless of the loss weighting. **Attack success (left) is not a dial**: `sample1_pangram`
+peaks at `entropy_weight=0.1`, drops to zero at `0.8`, then partially recovers at `1.5`; plain CTC loss
+alone (`entropy_weight=0.0`) is competitive with every weighted variant tested, and the best setting
+differs per sample. Sign-based PGD (`torch.sign(grad)`) turns a smooth-looking weighted loss into a
+step function, so a small change in the weighting can flip which samples get perturbed each iteration
+rather than smoothly scaling the result. This is the real content of "the trick is the loss, and how
+much you touch it up": the epsilon budget behaves predictably, but getting a specific clip to break
+needs the loss weighting searched per input, not set once from theory. Full sweep in the notebook.
+
+### Where the perturbation actually lives
+A related question the method names don't answer on their own: does psychoacoustic masking + energy
+filtering visibly reshape the perturbation's spectral content, compared to the raw PGD step before
+they're applied?
+
+![masking spectrogram](samples/masking_spectrogram.png)
+
+The three panels look almost the same, and the numbers confirm it isn't just a rendering issue: raw
+and final perturbation are **99.97% correlated**, with masking+filtering shifting things by only
+`Linf=0.0086` (about a fifth of the `epsilon=0.04` budget) on top of an already epsilon-saturating raw
+step. In this configuration, **the L∞ epsilon clamp is doing almost all of the imperceptibility work**
+- masking and filtering are a real but second-order refinement, not the dominant mechanism their names
+imply.
 
 ## 📖 References
 - **Wav2Vec2 Paper** - [https://arxiv.org/abs/2006.11477](https://arxiv.org/abs/2006.11477)

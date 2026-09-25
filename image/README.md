@@ -38,6 +38,13 @@ All four runs flip the top-1 prediction, two of them to 100% confidence in the w
 | coffee | mild | 8 | espresso → Irish setter | 35.1 | 0.893 |
 | coffee | strong | 16 | espresso → Irish setter | 29.5 | 0.727 |
 
+<table>
+<tr>
+<td align="center"><b>original</b><br><img src="samples/resnet18/coffee_raw.png" width="260"><br>espresso (99.0%)</td>
+<td align="center"><b>adversarial, ε=16/255</b><br><img src="samples/resnet18/coffee_strong_adversarial.png" width="260"><br>Irish setter (100%)</td>
+</tr>
+</table>
+
 ### YOLOv8n (detection)
 The true detection is suppressed to nothing in all four runs, but with no constraint against it, the
 model also hallucinates *other* objects that were never in the image:
@@ -48,6 +55,13 @@ model also hallucinates *other* objects that were never in the image:
 | chelsea | strong | 16 | cat (0.61) | cow (0.82) |
 | coffee | mild | 8 | cup (0.91), dining table (0.46) | toilet (0.76), cat (0.49) |
 | coffee | strong | 16 | cup (0.91), dining table (0.46) | cat (0.77) |
+
+<table>
+<tr>
+<td align="center"><b>original</b><br><img src="samples/yolov8n/chelsea_raw.png" width="260"><br>cat (0.61)</td>
+<td align="center"><b>adversarial, ε=8/255</b><br><img src="samples/yolov8n/chelsea_mild_adversarial.png" width="260"><br>person (0.96), donut (0.71), ...</td>
+</tr>
+</table>
 
 `PSNR`/`SSIM` are standard image-fidelity metrics (higher = closer to the original; 30+dB and 0.7+ SSIM
 are generally considered high-fidelity), used here the same way the audio project uses SNR: as a rough

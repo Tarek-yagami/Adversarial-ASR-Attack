@@ -19,6 +19,7 @@ fsspec==2025.3.0
 huggingface-hub==0.29.3
 idna==3.10
 ImageIO==2.37.4
+iniconfig==2.3.0
 ipykernel==6.29.5
 ipython==8.34.0
 jedi==0.19.2
@@ -46,6 +47,7 @@ packaging==24.2
 parso==0.8.4
 pillow==11.1.0
 platformdirs==4.3.6
+pluggy==1.6.0
 polars==1.44.2
 polars-runtime-32==1.44.2
 pooch==1.8.2
@@ -56,6 +58,7 @@ pycparser==2.22
 pydub==0.25.1
 Pygments==2.19.1
 pyparsing==3.2.1
+pytest==9.1.1
 python-dateutil==2.9.0.post0
 pywin32==310
 PyYAML==6.0.2
@@ -75,6 +78,7 @@ sympy==1.13.1
 threadpoolctl==3.6.0
 tifffile==2025.5.10
 tokenizers==0.21.1
+tomli==2.4.1
 torch==2.6.0
 torchaudio==2.6.0
 torchvision==0.21.0
