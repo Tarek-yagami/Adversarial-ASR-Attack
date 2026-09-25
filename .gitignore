@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Transient conversion output (regenerated and deleted by convert_audio each run)
+*_converted.wav

@@ -1,0 +1,58 @@
+[
+  {
+    "epsilon": 0.015,
+    "alpha": 0.005,
+    "num_iter": 10,
+    "text_original": "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG WHILE FIVE BOXING WIZARDS JUMP QUICKLY",
+    "text_adversarial": "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG WHILE FIVE BOXING WIZARDS JUMP QUICKLY",
+    "word_error_rate": 0.0,
+    "linf_perturbation": 0.015000000596046448,
+    "l2_perturbation": 3.286414384841919,
+    "snr_db": 19.939304946634508,
+    "final_loss": 4.766088962554932,
+    "sample": "sample1_pangram",
+    "config": "mild"
+  },
+  {
+    "epsilon": 0.04,
+    "alpha": 0.013,
+    "num_iter": 10,
+    "text_original": "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG WHILE FIVE BOXING WIZARDS JUMP QUICKLY",
+    "text_adversarial": "THE QUICK BROWN FOX JUMPED OVER THE LAZY DOG WHILE FIVE BOXING WIZARD JUMPED QUICKLY",
+    "word_error_rate": 0.2,
+    "linf_perturbation": 0.04000002145767212,
+    "l2_perturbation": 7.291151523590088,
+    "snr_db": 13.01788017862605,
+    "final_loss": 5.190338134765625,
+    "sample": "sample1_pangram",
+    "config": "strong"
+  },
+  {
+    "epsilon": 0.015,
+    "alpha": 0.005,
+    "num_iter": 10,
+    "text_original": "AUTOMATIC SPEECH RECOGNITION SYSTEMS CONVERT SPOKEN ADIO INTO WRITTEN TEXT USING DEEP NURAL NET WORKS",
+    "text_adversarial": "AUTOMATIC SPEECH RECOGNITION SYSTEMS CONVERT SPOKE AN ADIO INTO WRITTEN TEX FUSING DEEP NURAL NETWORKS",
+    "word_error_rate": 0.4,
+    "linf_perturbation": 0.015000000596046448,
+    "l2_perturbation": 3.830583333969116,
+    "snr_db": 18.89182648835853,
+    "final_loss": 7.722450256347656,
+    "sample": "sample2_tech",
+    "config": "mild"
+  },
+  {
+    "epsilon": 0.04,
+    "alpha": 0.013,
+    "num_iter": 10,
+    "text_original": "AUTOMATIC SPEECH RECOGNITION SYSTEMS CONVERT SPOKEN ADIO INTO WRITTEN TEXT USING DEEP NURAL NET WORKS",
+    "text_adversarial": "AUTOMATIC SPEECH RECOGNITION SYSTEMS CONVERTS SPOKE AN AUDIO INTO WRITTEN TEXT USING DEEPNURAL NET WORKS",
+    "word_error_rate": 0.4,
+    "linf_perturbation": 0.04000002145767212,
+    "l2_perturbation": 8.641335487365723,
+    "snr_db": 11.825519474460734,
+    "final_loss": 7.572291374206543,
+    "sample": "sample2_tech",
+    "config": "strong"
+  }
+]
