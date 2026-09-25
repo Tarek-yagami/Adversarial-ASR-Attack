@@ -1,56 +1,49 @@
-# Adversarial Attack on Wav2Vec2
+# Adversarial Attacks on Speech and Vision Models
 
-## 📌 Description  
-This project demonstrates an adversarial attack against the Wav2Vec2 ASR model.  
-By adding small, imperceptible perturbations to an audio signal, we can manipulate the model's transcription while keeping the modifications inaudible to humans.  
+White-box adversarial attacks against three pretrained models across two modalities: **Wav2Vec2**
+(speech-to-text), **ResNet-18** (image classification), and **YOLOv8n** (object detection). Every
+attack is Projected Gradient Descent (PGD) under an L∞ perturbation budget, verified end to end on
+real audio/image samples with the transcriptions, predictions, and perturbation metrics committed
+alongside the code — not just the method, but the measured result of running it.
 
-## ⚡ Methods Implemented  
-- **Projected Gradient Descent (PGD)** attack on CTC loss  
-- **Psychoacoustic Masking** to hide perturbations  
-- **Energy-Based Filtering** to make the attack more discreet  
+## 📁 Repository structure
+```
+audio/    Wav2Vec2 ASR attack (PGD + psychoacoustic masking + energy-based filtering)
+image/    ResNet-18 classification attack and YOLOv8n detection attack (PGD)
+```
+Each folder has its own notebook(s), a `samples/` directory with committed before/after
+audio or images plus a `results.json`, and a README with the full results table and methodology.
 
+## 📊 Highlights
+- **Wav2Vec2**: PGD on the CTC loss, with the perturbation re-projected onto the epsilon ball after
+  psychoacoustic masking and energy filtering are applied — an earlier version of this attack let
+  post-processing silently blow past the stated epsilon by 5-6x. See [`audio/`](audio/).
+- **ResNet-18**: an 8/255 (barely visible) perturbation flips top-1 predictions to 100% confidence in
+  the wrong class — `espresso` becomes `Irish setter`. See [`image/`](image/).
+- **YOLOv8n**: a disappearance attack reliably removes the true detection in every run, and also
+  surfaces a real failure mode of untargeted attacks on detectors — the model hallucinates confident,
+  nonexistent objects instead. See [`image/`](image/).
 
-## 🔧 Installation  
-1. Clone this repository:  
+## 🔧 Installation
+1. Clone this repository:
    ```bash
    git clone https://github.com/Tarek-yagami/Adversarial-ASR-Attack.git
    cd Adversarial-ASR-Attack
    ```
-2. Install dependencies:  
+2. Install dependencies (one `requirements.txt` covers both `audio/` and `image/`):
    ```bash
    pip install -r requirements.txt
    ```
-   `pydub` also requires [ffmpeg](https://ffmpeg.org/download.html) to be installed and on your `PATH`.
+   `pydub` (used by the audio notebook) also requires [ffmpeg](https://ffmpeg.org/download.html) on
+   your `PATH`.
+3. Run either notebook — see [`audio/README.md`](audio/README.md) or [`image/README.md`](image/README.md)
+   for usage and full results.
 
-## 🚀 Usage  
-Run the Jupyter Notebook to test the attack:  
-```bash
-jupyter notebook
-```
-Open `attack_wav2vec2.ipynb` and run the cells top to bottom. It downloads `facebook/wav2vec2-large-960h`
-(~1.2GB, cached after the first run) and attacks the two sample clips under `samples/`.
+## 📖 References
+- **PGD / Adversarial Training** - [Madry et al., 2017](https://arxiv.org/abs/1706.06083)
+- **Wav2Vec2** - [Baevski et al., 2020](https://arxiv.org/abs/2006.11477)
+- **Adversarial Attacks on ASR** - [Carlini & Wagner, 2018](https://arxiv.org/abs/1801.01944)
+- **Adversarial Examples for Object Detection** - [Xie et al., 2017](https://arxiv.org/abs/1703.08603)
 
-## 📊 Results  
-Two short, license-free sample clips (synthetic text-to-speech audio, not a copyrighted recording or
-anyone's voice) were run through the attack at two perturbation budgets each:
-
-| sample | config | epsilon | WER | L∞ | L2 | SNR (dB) |
-|---|---|---|---|---|---|---|
-| sample1_pangram | mild | 0.015 | 0.000 | 0.0150 | 3.286 | 19.9 |
-| sample1_pangram | strong | 0.04 | 0.200 | 0.0400 | 7.291 | 13.0 |
-| sample2_tech | mild | 0.015 | 0.400 | 0.0150 | 3.831 | 18.9 |
-| sample2_tech | strong | 0.04 | 0.400 | 0.0400 | 8.641 | 11.8 |
-
-`WER` is the word error rate between the original and adversarial transcription (there's no external
-ground-truth transcript, so this measures how much the attack degrades the model's own baseline reading
-of each clip). `L∞`/`L2` are the perturbation size in the normalized `[-1, 1]` waveform, kept within the
-stated `epsilon` budget by re-projecting after psychoacoustic masking and energy filtering are applied.
-`SNR` is signal power over perturbation power, a rough proxy for how audible the perturbation is likely
-to be.
-
-Raw and adversarial `.wav` files for every sample/config pair are committed under `samples/` — open them
-directly on GitHub to listen, or see `results.json` for the full metrics.
-
-## 📖 References  
-- **Wav2Vec2 Paper** - [https://arxiv.org/abs/2006.11477](https://arxiv.org/abs/2006.11477)  
-- **Adversarial Attacks on ASR** - [https://arxiv.org/abs/1801.01944](https://arxiv.org/abs/1801.01944)  
+## License
+[Apache License 2.0](LICENSE)

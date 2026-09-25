@@ -5,3 +5,6 @@ __pycache__/
 
 # Transient conversion output (regenerated and deleted by convert_audio each run)
 *_converted.wav
+
+# Pretrained weights auto-downloaded by ultralytics on first run (e.g. yolov8n.pt)
+*.pt

@@ -1,0 +1,134 @@
+[
+  {
+    "sample": "chelsea",
+    "config": "mild",
+    "epsilon_255": 8,
+    "targeted_anchors": 7,
+    "original_detections": [
+      [
+        "cat",
+        0.6103441715240479
+      ]
+    ],
+    "adversarial_detections": [
+      [
+        "person",
+        0.9628097414970398
+      ],
+      [
+        "donut",
+        0.7061953544616699
+      ],
+      [
+        "person",
+        0.5096240043640137
+      ],
+      [
+        "chair",
+        0.4497954547405243
+      ],
+      [
+        "chair",
+        0.32702866196632385
+      ],
+      [
+        "wine glass",
+        0.2566416263580322
+      ],
+      [
+        "chair",
+        0.2557154595851898
+      ]
+    ],
+    "detections_before": 1,
+    "detections_after": 7,
+    "linf_perturbation_255": 8.000006675720215,
+    "l2_perturbation": 21.619199752807617,
+    "psnr_db": 34.19809697467567,
+    "ssim": 0.8117906451225281
+  },
+  {
+    "sample": "chelsea",
+    "config": "strong",
+    "epsilon_255": 16,
+    "targeted_anchors": 7,
+    "original_detections": [
+      [
+        "cat",
+        0.6103441715240479
+      ]
+    ],
+    "adversarial_detections": [
+      [
+        "cow",
+        0.8210317492485046
+      ]
+    ],
+    "detections_before": 1,
+    "detections_after": 1,
+    "linf_perturbation_255": 16.0000057220459,
+    "l2_perturbation": 43.16835021972656,
+    "psnr_db": 28.191580464993752,
+    "ssim": 0.5496379733085632
+  },
+  {
+    "sample": "coffee",
+    "config": "mild",
+    "epsilon_255": 8,
+    "targeted_anchors": 23,
+    "original_detections": [
+      [
+        "cup",
+        0.9083733558654785
+      ],
+      [
+        "dining table",
+        0.46282678842544556
+      ]
+    ],
+    "adversarial_detections": [
+      [
+        "toilet",
+        0.7555314898490906
+      ],
+      [
+        "cat",
+        0.49297282099723816
+      ]
+    ],
+    "detections_before": 2,
+    "detections_after": 2,
+    "linf_perturbation_255": 8.000006675720215,
+    "l2_perturbation": 21.5162410736084,
+    "psnr_db": 34.23957122468627,
+    "ssim": 0.8086498379707336
+  },
+  {
+    "sample": "coffee",
+    "config": "strong",
+    "epsilon_255": 16,
+    "targeted_anchors": 23,
+    "original_detections": [
+      [
+        "cup",
+        0.9083733558654785
+      ],
+      [
+        "dining table",
+        0.46282678842544556
+      ]
+    ],
+    "adversarial_detections": [
+      [
+        "cat",
+        0.7745656967163086
+      ]
+    ],
+    "detections_before": 2,
+    "detections_after": 1,
+    "linf_perturbation_255": 16.0000057220459,
+    "l2_perturbation": 42.73904037475586,
+    "psnr_db": 28.27840351551776,
+    "ssim": 0.5577392578125
+  }
+]

@@ -1,0 +1,58 @@
+[
+  {
+    "sample": "chelsea",
+    "config": "mild",
+    "epsilon_255": 8,
+    "original_label": "Egyptian cat",
+    "original_confidence": 0.768592119216919,
+    "adversarial_label": "Persian cat",
+    "adversarial_confidence": 1.0,
+    "misclassified": true,
+    "linf_perturbation_255": 8.000006675720215,
+    "l2_perturbation": 12.759696960449219,
+    "psnr_db": 33.967222050234554,
+    "ssim": 0.889336109161377
+  },
+  {
+    "sample": "chelsea",
+    "config": "strong",
+    "epsilon_255": 16,
+    "original_label": "Egyptian cat",
+    "original_confidence": 0.768592119216919,
+    "adversarial_label": "Persian cat",
+    "adversarial_confidence": 1.0,
+    "misclassified": true,
+    "linf_perturbation_255": 16.0000057220459,
+    "l2_perturbation": 24.673202514648438,
+    "psnr_db": 28.23951976187987,
+    "ssim": 0.7029473185539246
+  },
+  {
+    "sample": "coffee",
+    "config": "mild",
+    "epsilon_255": 8,
+    "original_label": "espresso",
+    "original_confidence": 0.9896417260169983,
+    "adversarial_label": "Irish setter",
+    "adversarial_confidence": 0.9999997615814209,
+    "misclassified": true,
+    "linf_perturbation_255": 8.000006675720215,
+    "l2_perturbation": 14.958968162536621,
+    "psnr_db": 35.07510033000126,
+    "ssim": 0.8933050036430359
+  },
+  {
+    "sample": "coffee",
+    "config": "strong",
+    "epsilon_255": 16,
+    "original_label": "espresso",
+    "original_confidence": 0.9896417260169983,
+    "adversarial_label": "Irish setter",
+    "adversarial_confidence": 1.0,
+    "misclassified": true,
+    "linf_perturbation_255": 16.0000057220459,
+    "l2_perturbation": 28.448183059692383,
+    "psnr_db": 29.49207664692974,
+    "ssim": 0.7266333103179932
+  }
+]
