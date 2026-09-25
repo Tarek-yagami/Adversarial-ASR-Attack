@@ -1,0 +1,26 @@
+[
+  {
+    "sample": "sample1_pangram",
+    "config": "mild",
+    "transfer_wer": 0.0,
+    "source_model_wer": 0.0
+  },
+  {
+    "sample": "sample1_pangram",
+    "config": "strong",
+    "transfer_wer": 0.3333333333333333,
+    "source_model_wer": 0.2
+  },
+  {
+    "sample": "sample2_tech",
+    "config": "mild",
+    "transfer_wer": 0.26666666666666666,
+    "source_model_wer": 0.4
+  },
+  {
+    "sample": "sample2_tech",
+    "config": "strong",
+    "transfer_wer": 0.7333333333333333,
+    "source_model_wer": 0.4
+  }
+]

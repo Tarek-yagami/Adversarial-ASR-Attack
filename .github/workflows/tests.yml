@@ -1,0 +1,20 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      # Only torch + pytest are needed for audio/test_attack_lib.py; installing the
+      # full requirements.txt (transformers, ultralytics, ...) here would be slow and
+      # unnecessary for testing a couple of pure-tensor helper functions.
+      - run: pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - run: pip install pytest
+      - run: pytest audio/test_attack_lib.py -v

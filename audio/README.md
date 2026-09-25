@@ -51,19 +51,19 @@ stated `epsilon` budget by re-projecting after psychoacoustic masking and energy
 `SNR` is signal power over perturbation power, a rough proxy for how audible the perturbation is likely
 to be.
 
-Raw and adversarial `.wav` files for every sample/config pair are committed under `samples/` — open them
+Raw and adversarial `.wav` files for every sample/config pair are committed under `samples/`. Open them
 directly on GitHub to listen, or see `samples/results.json` for the full metrics.
 
-### The actual trick: tuning the loss, not just running PGD
-The attack's loss is `alignment_loss + entropy_weight * entropy_loss` — CTC alignment loss plus a
+### The actual trick: tuning the loss
+The attack's loss is `alignment_loss + entropy_weight * entropy_loss`, CTC alignment loss plus a
 weighted entropy term. It's tempting to assume `entropy_weight` is a simple dial: turn it up, get a
 more successful attack at the same perceptibility cost, since `epsilon` alone should bound how audible
-the perturbation can be. The notebook tests that directly instead of asserting it — fixing
+the perturbation can be. The notebook tests that directly instead of asserting it, fixing
 `epsilon=0.025` and sweeping `entropy_weight` across seven values, on both samples:
 
 ![entropy weight sweep](samples/entropy_weight_sweep.png)
 
-**Imperceptibility (right) is flat**, exactly as the epsilon re-projection should make it — SNR barely
+**Imperceptibility (right) is flat**, exactly as the epsilon re-projection should make it. SNR barely
 moves regardless of the loss weighting. **Attack success (left) is not a dial**: `sample1_pangram`
 peaks at `entropy_weight=0.1`, drops to zero at `0.8`, then partially recovers at `1.5`; plain CTC loss
 alone (`entropy_weight=0.0`) is competitive with every weighted variant tested, and the best setting
@@ -86,6 +86,25 @@ and final perturbation are **99.97% correlated**, with masking+filtering shiftin
 step. In this configuration, **the L∞ epsilon clamp is doing almost all of the imperceptibility work**
 - masking and filtering are a real but second-order refinement, not the dominant mechanism their names
 imply.
+
+### Does it transfer to a model that never saw this attack?
+Everything above is white-box against `wav2vec2-large-960h` specifically. A separate and more
+important question: does the same adversarial audio still fool `wav2vec2-base-960h`, a smaller,
+differently-trained checkpoint that never contributed a single gradient to the attack?
+
+| sample | config | source WER (large-960h) | transfer WER (base-960h) |
+|---|---|---|---|
+| sample1_pangram | mild | 0.000 | 0.000 |
+| sample1_pangram | strong | 0.200 | 0.333 |
+| sample2_tech | mild | 0.400 | 0.267 |
+| sample2_tech | strong | 0.400 | **0.733** |
+
+It transfers, and not always weaker for it: `sample2_tech / strong` is *more* destructive on the
+model it was never crafted against (0.733 vs. 0.400). This means the vulnerability isn't narrowly
+scoped to one specific deployed checkpoint - an attacker with only a locally-held related model, not
+the exact one being targeted, has a real chance of degrading it too. That's a more serious threat
+model than the white-box construction alone would suggest, and it only shows up by actually testing
+transfer instead of assuming an attack is as narrow as how it was built.
 
 ## 📖 References
 - **Wav2Vec2 Paper** - [https://arxiv.org/abs/2006.11477](https://arxiv.org/abs/2006.11477)

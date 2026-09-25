@@ -1,10 +1,10 @@
 # Adversarial Attacks on Speech and Vision Models
 
-White-box adversarial attacks against three pretrained models across two modalities: **Wav2Vec2**
-(speech-to-text), **ResNet-18** (image classification), and **YOLOv8n** (object detection). Every
-attack is Projected Gradient Descent (PGD) under an L∞ perturbation budget, verified end to end on
-real audio/image samples with the transcriptions, predictions, and perturbation metrics committed
-alongside the code — not just the method, but the measured result of running it.
+White-box adversarial attacks against three pretrained models across two modalities: Wav2Vec2
+(speech-to-text), ResNet-18 (image classification), and YOLOv8n (object detection). Every attack is
+Projected Gradient Descent (PGD) under an L∞ perturbation budget. Every result is verified end to
+end on real audio and image samples, with the transcriptions, predictions, and perturbation metrics
+committed alongside the code.
 
 ## 📁 Repository structure
 ```
@@ -16,15 +16,18 @@ audio or images plus a `results.json`, and a README with the full results table 
 
 ## 📊 Highlights
 - **Wav2Vec2**: PGD on the CTC loss, with the perturbation re-projected onto the epsilon ball after
-  psychoacoustic masking and energy filtering are applied — an earlier version of this attack let
-  post-processing silently blow past the stated epsilon by 5-6x. A follow-up sweep tests the more
-  interesting assumption directly: does tuning the loss weighting actually buy more success at the
-  same imperceptibility? The measured answer is more honest than "yes" — see [`audio/`](audio/).
-- **ResNet-18**: an 8/255 (barely visible) perturbation flips top-1 predictions to 100% confidence in
-  the wrong class — `espresso` becomes `Irish setter`. See [`image/`](image/).
-- **YOLOv8n**: a disappearance attack reliably removes the true detection in every run, and also
-  surfaces a real failure mode of untargeted attacks on detectors — the model hallucinates confident,
-  nonexistent objects instead. See [`image/`](image/).
+  psychoacoustic masking and energy filtering are applied. An earlier version of this attack let
+  post-processing silently blow past the stated epsilon by 5-6x. A follow-up sweep tests a more
+  interesting assumption directly: does tuning the loss weighting actually buy more attack success at
+  the same imperceptibility? The measured answer is more honest than "yes." A second test asks
+  whether the attack transfers to a model it was never crafted against, and it does, sometimes more
+  destructively than on the original target. See [`audio/`](audio/).
+- **ResNet-18**: an 8/255 perturbation, barely visible at a glance, flips top-1 predictions to 100%
+  confidence in the wrong class. `espresso` becomes `Irish setter`. See [`image/`](image/).
+- **YOLOv8n**: a disappearance attack reliably removes the true detection in every run, and surfaces
+  a real failure mode of untargeted attacks on detectors: the model hallucinates confident,
+  nonexistent objects instead. A follow-up loss that explicitly penalizes those hallucinations cuts
+  their confidence roughly in half but doesn't eliminate them. See [`image/`](image/).
 
 ## 🔧 Installation
 1. Clone this repository:
@@ -38,7 +41,7 @@ audio or images plus a `results.json`, and a README with the full results table 
    ```
    `pydub` (used by the audio notebook) also requires [ffmpeg](https://ffmpeg.org/download.html) on
    your `PATH`.
-3. Run either notebook — see [`audio/README.md`](audio/README.md) or [`image/README.md`](image/README.md)
+3. Run either notebook. See [`audio/README.md`](audio/README.md) or [`image/README.md`](image/README.md)
    for usage and full results.
 
 ## 📖 References

@@ -63,6 +63,23 @@ model also hallucinates *other* objects that were never in the image:
 </tr>
 </table>
 
+**Does explicitly penalizing hallucinations fix it?** The notebook also tries a second loss that
+suppresses the top-10 most confident detections *anywhere in the image*, recomputed every iteration,
+not just the ones present in the clean pass:
+
+| sample | config | disappearance only | + explicit suppression |
+|---|---|---|---|
+| chelsea | mild | person, 96% | teddy bear, 39% |
+| chelsea | strong | cow, 82% | vase, 62% |
+| coffee | mild | toilet, 76% | *(nothing)* |
+| coffee | strong | cat, 77% | cake, 45% |
+
+It helps, roughly halving the average hallucinated confidence and eliminating it outright in one
+case, but it doesn't fully solve the problem: the model still finds *some* class to push confidence
+into in 3 of 4 runs. Pinning that down completely would need to suppress every anchor above some
+threshold, not just the top 10, which starts to look less like an attack and more like a full
+multi-objective optimization problem.
+
 `PSNR`/`SSIM` are standard image-fidelity metrics (higher = closer to the original; 30+dB and 0.7+ SSIM
 are generally considered high-fidelity), used here the same way the audio project uses SNR: as a rough
 proxy for how little a human would notice.
